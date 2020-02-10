@@ -36,7 +36,7 @@ def get_inc():
         ans = { 'status': 409, 'msg': 'Conflict. This number already was.' }
         return make_response(jsonify(ans), 409)
 
-    if (num - 1) in nums:
+    if (num + 1) in nums:
         ans = { 'status': 409, 'msg': 'Conflict. number - 1 already was.' }
         return 
 
