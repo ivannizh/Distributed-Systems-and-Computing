@@ -1,6 +1,7 @@
 import sqlalchemy 
+import psycopg2
 
-db_string = 'postgres://user:pass@localhost:5432/rvs'
+db_string = 'postgres://user:pass@db:5432/rvs'
 db = sqlalchemy.create_engine(db_string)
 
 db.execute('CREATE TABLE IF NOT EXISTS numbers (num integer PRIMARY KEY)')  
