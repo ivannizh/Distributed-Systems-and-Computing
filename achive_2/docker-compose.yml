@@ -1,0 +1,17 @@
+version: '2.3'
+
+services:
+
+  db:
+    restart: always
+    container_name: db
+    image:    sameersbn/postgresql:10-2
+    environment:
+      - POSTGRES_PASSWORD=docker
+      - DB_USER=user
+      - DB_PASS=pass
+      - DB_NAME=rvs
+    ports:
+      - "5432:5432"
+    volumes:
+     - ./db_tmp:/var/lib/postgresql/data 
