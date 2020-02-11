@@ -22,12 +22,12 @@ def get_inc():
     
     num = data.get('num', None)
 
-    if type(num) is not int:
-        ans = { 'status': 400, 'msg': 'Bad Request. Number is not int' }
-        return make_response(jsonify(ans), 400)
-
     if num is None:
         ans = { 'status': 400, 'msg': 'Bad Request. Can\'t find \'num\' field.' }
+        return make_response(jsonify(ans), 400)
+
+    if type(num) is not int:
+        ans = { 'status': 400, 'msg': 'Bad Request. Number is not int' }
         return make_response(jsonify(ans), 400)
 
     nums = get_num(num)

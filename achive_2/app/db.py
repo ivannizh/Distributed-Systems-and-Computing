@@ -8,8 +8,6 @@ DB_URL  = os.getenv('DB_URL')
 DB_PORT = os.getenv('DB_PORT')
 DB_NAME = os.getenv('DB_NAME')
 
-print('aaaaaaaaaaaaaaaaaaaaaa', DB_PORT)
-
 if  DB_USER is None or DB_PASS is None or DB_URL  is None or DB_PORT is None or DB_NAME is None:
     exit(1)
 
