@@ -4,11 +4,14 @@ from flask import make_response
 from flask import jsonify
 import json
 
-from db import insert_num, get_all_num, get_num
+import db
+# from db import insert_num, get_all_num, get_num
 
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'you-will-never-guess'
+
+print('asdasdasd')
 
 @app.route('/', methods=['POST'])
 def get_inc():
@@ -30,7 +33,7 @@ def get_inc():
         ans = { 'status': 400, 'msg': 'Bad Request. Number is not int' }
         return make_response(jsonify(ans), 400)
 
-    nums = get_num(num)
+    nums = db.get_num(num)
 
     if num in nums:
         ans = { 'status': 409, 'msg': 'Conflict. This number already was.' }
@@ -40,7 +43,7 @@ def get_inc():
         ans = { 'status': 409, 'msg': 'Conflict. number - 1 already was.' }
         return 
 
-    if not insert_num(num):
+    if not db.insert_num(num):
         raise Exception('Uncought error')
 
     ans = { 'num': num + 1, 'status': 201, 'msg': 'Created.'  }
@@ -48,4 +51,5 @@ def get_inc():
     return make_response(jsonify(ans), 200)
 
 if __name__ == '__main__':
+    print("as")
     app.run(debug=True)
