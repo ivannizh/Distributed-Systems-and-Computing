@@ -1,0 +1,103 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ns-11-app-dep
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ns-11-app-dep
+  template:
+    metadata:
+      labels:
+        app: ns-11-app-dep
+    spec:
+      containers:
+      - name: ns-11-app-dep
+        image: ivannizh/incrementer:4.0
+        ports:
+        - containerPort: 5005
+        env:
+        - name: APP_PORT
+          value: "5000"
+        - name: DB_USER
+          value: "user"
+        - name: DB_PASS
+          value: "pass"
+        - name: DB_PORT
+          value: "5432"
+        - name: DB_NAME
+          value: "rvs"
+        - name: DB_PG_PASS
+          value: "docker"
+        - name: DB_URL
+          value: "node-11-dep-db"
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-11-dep-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: node-11
+  template:
+    metadata:
+      labels:
+        app: node-11
+    spec:
+      containers:
+      - name: node-11
+        image: sameersbn/postgresql:10-2
+        ports:
+        - containerPort: 5432
+        env:
+        - name: APP_PORT
+          value: "5000"
+        - name: DB_USER
+          value: "user"
+        - name: DB_PASS
+          value: "pass"
+        - name: DB_PORT
+          value: "5432"
+        - name: DB_NAME
+          value: "rvs"
+        - name: DB_PG_PASS
+          value: "docker"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ns-11-load-balancer
+spec:
+#  type: LoadBalancer
+  type: ClusterIP
+  ports:
+  - port: 5005
+    targetPort: 5005
+  selector:
+    app: ns-11-app-dep
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: node-11-ing
+spec:
+  rules:
+  - host: node-11.hse
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: ns-11-load-balancer
+          servicePort: 5005	
+
+
+

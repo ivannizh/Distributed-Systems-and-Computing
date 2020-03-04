@@ -4,18 +4,11 @@ import sqlalchemy
 from sys import exit
 import time
 
-# DB_USER = os.getenv('DB_USER')
-# DB_PASS = os.getenv('DB_PASS')
-# DB_URL  = os.getenv('DB_URL')
-# DB_PORT = os.getenv('DB_PORT')
-# DB_NAME = os.getenv('DB_NAME')
-
-DB_USER = 'None'
-DB_PASS = 'None'
-DB_URL  = 'localhost'
-DB_PORT = 123
-DB_NAME = 'None'
-
+DB_USER = os.getenv('DB_USER')
+DB_PASS = os.getenv('DB_PASS')
+DB_URL  = os.getenv('DB_URL')
+DB_PORT = os.getenv('DB_PORT')
+DB_NAME = os.getenv('DB_NAME')
 
 if  DB_USER is None or DB_PASS is None or DB_URL  is None or DB_PORT is None or DB_NAME is None:
     exit(1)

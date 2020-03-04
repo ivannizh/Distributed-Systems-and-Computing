@@ -11,8 +11,6 @@ import db
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'you-will-never-guess'
 
-print('asdasdasd')
-
 @app.route('/', methods=['POST'])
 def get_inc():
     num = 0
