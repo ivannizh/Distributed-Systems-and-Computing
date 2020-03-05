@@ -1,6 +1,6 @@
 import sqlalchemy 
 # import psycopg2
-# import os
+import os
 from sys import exit
 import time
 

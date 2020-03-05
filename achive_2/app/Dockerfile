@@ -18,4 +18,4 @@ RUN \
 
 COPY . .
 
-CMD ["flask", "run"]
+CMD ["python3", "-m", "flask", "run"]
