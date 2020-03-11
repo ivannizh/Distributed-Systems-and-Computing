@@ -11,6 +11,12 @@ import db
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'you-will-never-guess'
 
+@app.route('/clear', methods=['POST'])
+def clear_db():
+    db.clear_db()
+    ans = { 'status': 200, 'msg': 'Cleared.'  }
+    return make_response(jsonify(ans), 200)
+
 @app.route('/', methods=['POST'])
 def get_inc():
     num = 0
@@ -50,4 +56,4 @@ def get_inc():
 
 if __name__ == '__main__':
     print("as")
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)

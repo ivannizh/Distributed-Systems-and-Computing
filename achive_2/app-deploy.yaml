@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: ns-11-app-dep
 spec:
-  replicas: 3
+  replicas: 5
   selector:
     matchLabels:
       app: ns-11-app-dep
@@ -14,9 +14,9 @@ spec:
     spec:
       containers:
       - name: ns-11-app-dep
-        image: ivannizh/incrementer:4.0
+        image: ivannizh/incrementer:6.9
         ports:
-        - containerPort: 5005
+        - containerPort: 5000
         env:
         - name: APP_PORT
           value: "5000"
@@ -28,10 +28,8 @@ spec:
           value: "5432"
         - name: DB_NAME
           value: "rvs"
-        - name: DB_PG_PASS
-          value: "docker"
         - name: DB_URL
-          value: "node-11-dep-db"
+          value: "ns-11-db-service"
 
 ---
 
@@ -43,30 +41,37 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: node-11
+      app: node-11-dep-db
   template:
     metadata:
       labels:
-        app: node-11
+        app: node-11-dep-db
     spec:
       containers:
-      - name: node-11
-        image: sameersbn/postgresql:10-2
+      - name: node-11-dep-db
+        image: postgres
         ports:
         - containerPort: 5432
         env:
-        - name: APP_PORT
-          value: "5000"
-        - name: DB_USER
+        - name: POSTGRES_USER
           value: "user"
-        - name: DB_PASS
+        - name: POSTGRES_PASSWORD
           value: "pass"
-        - name: DB_PORT
-          value: "5432"
-        - name: DB_NAME
+        - name: POSTGRES_DB
           value: "rvs"
-        - name: DB_PG_PASS
-          value: "docker"
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ns-11-db-service
+spec:
+#  type: LoadBalancer
+#  type: ClusterIP
+  ports:
+  - port: 5432
+  selector:
+    app: node-11-dep-db
 
 ---
 
@@ -76,10 +81,9 @@ metadata:
   name: ns-11-load-balancer
 spec:
 #  type: LoadBalancer
-  type: ClusterIP
+#  type: ClusterIP
   ports:
-  - port: 5005
-    targetPort: 5005
+  - port: 5000
   selector:
     app: ns-11-app-dep
 
@@ -97,7 +101,7 @@ spec:
       - path: /
         backend:
           serviceName: ns-11-load-balancer
-          servicePort: 5005	
+          servicePort: 5000	
 
 
 
