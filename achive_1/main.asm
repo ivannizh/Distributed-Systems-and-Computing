@@ -12,15 +12,15 @@
 .equ BAUD = 8000000 / (16 * Bitrate) - 1
 
 
-.equ TIM_0_DELAY_MICROSEC = 31; MAX 31 micro sec
-.equ TIM_2_DELAY_MICROSEC = 31; MAX 31 micro sec
+.equ TIM_0_DELAY_MILISEC = 31; MAX 31 mili sec
+.equ TIM_2_DELAY_MILISEC = 31; MAX 31 mili sec
 
 
 .equ TIM_0_DELAY_FIRST = 0x00
 .equ TIM_2_DELAY_FIRST = 0x80
 
-.equ TIM_0_DELAY = TIM_0_DELAY_MICROSEC * 8
-.equ TIM_2_DELAY = TIM_2_DELAY_MICROSEC * 8
+.equ TIM_0_DELAY = TIM_0_DELAY_MILISEC * 8
+.equ TIM_2_DELAY = TIM_2_DELAY_MILISEC * 8
 
 .equ TIM_0_DELAY_REG = 0xff - TIM_0_DELAY
 .equ TIM_2_DELAY_REG = 0xff - TIM_2_DELAY
@@ -114,16 +114,16 @@ label:
 	ldi r20, 0
 	ret
 
-USART_TXC: // Прерывание по отсылке байта
-	cli // Запрещаем прерывания
+USART_TXC: // ГЏГ°ГҐГ°Г»ГўГ Г­ГЁГҐ ГЇГ® Г®ГІГ±Г»Г«ГЄГҐ ГЎГ Г©ГІГ 
+	cli // Г‡Г ГЇГ°ГҐГ№Г ГҐГ¬ ГЇГ°ГҐГ°Г»ГўГ Г­ГЁГї
 	push r16
 	push r18
 	push r17
-	;sbis UCSRA,UDRE // Стандартная проверка из тех.дока, если UDRE = 1 пропускаем следующую строку 
+	;sbis UCSRA,UDRE // Г‘ГІГ Г­Г¤Г Г°ГІГ­Г Гї ГЇГ°Г®ГўГҐГ°ГЄГ  ГЁГ§ ГІГҐГµ.Г¤Г®ГЄГ , ГҐГ±Г«ГЁ UDRE = 1 ГЇГ°Г®ГЇГіГ±ГЄГ ГҐГ¬ Г±Г«ГҐГ¤ГіГѕГ№ГіГѕ Г±ГІГ°Г®ГЄГі 
 	
 	lds r18, UCSR0A
     sbrs r18,UDRE0
-	rjmp USART_TXC // Либо вращаемся в цикле
+	rjmp USART_TXC // Г‹ГЁГЎГ® ГўГ°Г Г№Г ГҐГ¬Г±Гї Гў Г¶ГЁГЄГ«ГҐ
 	
 	cpi r20, 1
 	breq VixUT
